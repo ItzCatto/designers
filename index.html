@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Roulette | Minimalist System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Outfit:wght@500;700;900&display=swap');
+
+        :root {
+            --primary: #6366F1;
+            --bg: #020617;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: #f9fafb;
+
+            overflow-x: hidden;
+        }
+
+        h1, .prompt-text {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* REFINED FLOATING CARDS */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .slot-container {
+            height: 80px;
+            overflow: hidden;
+
+            position: relative;
+            mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+        }
+
+        .slot-reel {
+            transition: transform 3.5s cubic-bezier(0.15, 0.85, 0.15, 1);
+        }
+
+        .connector {
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #475569;
+            opacity: 0.6;
+        }
+
+        /* MATCHED GLASS SPIN BUTTON */
+        .spin-btn {
+
+            background: rgba(99, 102, 241, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: white;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.8);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            transform: scale(1.02);
+        }
+
+        .spin-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+
+        /* IMPROVED TOGGLE */
+        .toggle-switch {
+            width: 36px;
+            height: 18px;
+            background: #1e293b;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+
+            top: 1px;
+            left: 1px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-switch {
+            background: var(--primary);
+        }
+
+        input:checked + .toggle-switch::after {
+            transform: translateX(18px);
+        }
+
+        /* BACKGROUND */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1655841439659-0afc60676b70?fm=jpg&q=60&w=3000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+
+        }
+
+        .theme-dimmed {
+            opacity: 0.15;
+            filter: grayscale(1) blur(2px);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .connector { display: none; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+
+    <div class="fixed inset-0 hero-bg z-[-1]"></div>
+
+    <div class="w-full max-w-6xl">
+        <header class="text-center mb-16">
+
+            <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-1 uppercase">DESIGN<span class="text-indigo-500">ROULETTE</span></h1>
+            <p class="text-slate-600 text-[9px] font-extrabold uppercase tracking-[0.6em]">Creative Engine</p>
+        </header>
+
+        <!-- Main Interface -->
+        <div class="flex flex-col gap-12">
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+
+                <!-- 01 // SUBJECT -->
+                <div class="flex flex-col gap-4">
+                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">01 // SUBJECT</span>
+                    <div class="glass-card rounded-[2rem] p-6 flex flex-col items-center">
+                        <div class="slot-container w-full">
+                            <div id="reel-subject" class="slot-reel"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 02 // FOCUS -->
+                <div class="flex flex-col gap-4 relative">
+                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">02 // FOCUS</span>
+                    <div class="glass-card rounded-[2rem] p-6 flex flex-col items-center relative">
+                        <span class="absolute -left-9 top-1/2 -translate-y-1/2 connector">making a</span>
+                        <div class="slot-container w-full">
+                            <div id="reel-focus" class="slot-reel"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 03 // THEME -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center ml-1">
+                        <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">03 // THEME</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="theme-toggle" class="sr-only" checked>
+                            <div class="toggle-switch"></div>
+                        </label>
+
+                    </div>
+                    <div id="theme-card" class="glass-card rounded-[2rem] p-6 flex flex-col items-center relative transition-all duration-500">
+                        <span class="absolute -left-7 top-1/2 -translate-y-1/2 connector">in a</span>
+                        <div class="slot-container w-full">
+                            <div id="reel-theme" class="slot-reel"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 04 // FORMAT -->
+                <div class="flex flex-col gap-4 relative">
+                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">04 // FORMAT</span>
+                    <div class="glass-card rounded-[2rem] p-6 flex flex-col items-center relative">
+                        <span class="absolute -left-7 top-1/2 -translate-y-1/2 connector">as a</span>
+                        <div class="slot-container w-full">
+                            <div id="reel-format" class="slot-reel"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Action Area -->
+            <div class="flex flex-col items-center gap-12 mt-4">
+                <button id="spin-btn" class="spin-btn px-20 py-4 rounded-full font-black text-[10px] tracking-[0.4em] uppercase">
+                    Spin
+                </button>
+
+                <!-- SIMPLIFIED BRIEF -->
+                <div id="result-box" class="opacity-0 transform translate-y-4 transition-all duration-700 w-full max-w-4xl">
+                    <div class="glass-card rounded-[3rem] p-10 md:p-14 text-center border-none bg-white/[0.01]">
+                        <p id="prompt-text" class="prompt-text text-2xl md:text-4xl font-bold leading-snug text-white">
+                            <!-- Brief text injects here -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const data = {
+            subject: ["IKEA", "Walmart", "Nintendo", "NASA", "High School", "Tesla", "Spotify", "Apple", "Lego", "Startup", "Museum", "Starbucks"],
+            focus: [
+                { name: "Spacesuit", action: "making a" },
+                { name: "Science Fair", action: "hosting a" },
+                { name: "Electric Bike", action: "launching an" },
+                { name: "Smart Toaster", action: "creating a" },
+                { name: "Fundraiser", action: "organizing a" },
+                { name: "Mobile Game", action: "developing a" },
+                { name: "New Shoes", action: "designing" },
+                { name: "Duck Brand", action: "rebranding" },
+                { name: "Art Expo", action: "curating an" }
+            ],
+            theme: ["Cyberpunk", "Minimalist", "Vaporwave", "Bauhaus", "Swiss", "Art Deco", "Brutalist", "Y2K", "Neo-Modern"],
+            format: ["Website", "Flyer", "Logo", "Business Card", "Presentation", "Mobile App", "Email", "Packaging", "Brand Guide"]
+        };
+
+        const reels = ['subject', 'focus', 'theme', 'format'];
+
+        const rowHeight = 80;
+        let isSpinning = false;
+
+        function init() {
+            reels.forEach(cat => {
+                const reel = document.getElementById(`reel-${cat}`);
+                const items = data[cat];
+                const displayItems = [...items, ...items, ...items, ...items, ...items];
+                displayItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'h-[80px] flex items-center justify-center text-center px-4 font-bold text-slate-500 text-xs md:text-sm tracking-tight';
+                    div.innerText = item.name || item;
+                    reel.appendChild(div);
+                });
+            });
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeCard = document.getElementById('theme-card');
+
+        themeToggle.addEventListener('change', () => {
+            themeCard.classList.toggle('theme-dimmed', !themeToggle.checked);
+        });
+
+        async function roll() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const btn = document.getElementById('spin-btn');
+            const box = document.getElementById('result-box');
+            const text = document.getElementById('prompt-text');
+
+            btn.disabled = true;
+            box.classList.add('opacity-0', 'translate-y-4');
+
+            const result = {};
+
+            const animations = reels.map((cat, i) => {
+                return new Promise(resolve => {
+
+                    const reel = document.getElementById(`reel-${cat}`);
+                    const list = data[cat];
+                    const rand = Math.floor(Math.random() * list.length);
+                    result[cat] = list[rand];
+
+                    const offset = (list.length * 3 + rand) * rowHeight;
+
+                    setTimeout(() => {
+                        reel.style.transform = `translateY(-${offset}px)`;
+                        setTimeout(resolve, 3500);
+                    }, i * 150);
+                });
+            });
+
+            await Promise.all(animations);
+
+            const s = result.subject;
+            const f = result.focus;
+            const t = result.theme;
+
+            const fo = result.format;
+
+            let finalHTML = `<span class="text-white">${s}</span> `;
+            finalHTML += `<span class="text-slate-500 font-light italic">${f.action}</span> <span class="text-white">${f.name}</span> `;
+
+            if (themeToggle.checked) {
+                finalHTML += `<span class="text-slate-500 font-light italic">in a</span> <span class="text-indigo-400 font-bold">${t} style</span> `;
+            }
+
+            finalHTML += `<span class="text-slate-500 font-light italic">as a</span> <span class="text-white decoration-indigo-500/50 underline underline-offset-[12px]">${fo}</span>.`;
+
+            text.innerHTML = finalHTML;
+            box.classList.remove('opacity-0', 'translate-y-4');
+            btn.disabled = false;
+            isSpinning = false;
+        }
+
+        document.getElementById('spin-btn').addEventListener('click', roll);
+        init();
+
+    </script>
+</body>
+</html>
